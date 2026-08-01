@@ -7,7 +7,9 @@ on:
 
   workflow_dispatch:
 
-
+permissions:
+  contents: write
+  
 jobs:
 
   test:
@@ -38,7 +40,7 @@ jobs:
         run: |
           sudo npm install -g allure-commandline --save-dev
 
-          
+
       - name: Verificar Allure
         if: always()
         run: |
@@ -47,25 +49,16 @@ jobs:
 
       - name: Gerar relatório Allure
         if: always()
-        run: |
-          allure generate allure-results \
-          --clean \
-          -o target/allure-report
-
-
-      - name: Publicar relatório Allure
-        if: always()
-        uses: actions/upload-artifact@v4
+        uses: simple-elf/allure-report-action@master
         with:
-          name: allure-report
-          path: target/allure-report
-          retention-days: 30
+          allure_results: allure-results
+          allure_history: allure-history
 
 
-      - name: Publicar resultados dos testes
+      - name: Publicar relatório Allure no GitHub Pages
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: API Test Results
-          path: target/surefire-reports/*.xml
-          reporter: java-junit
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: allure
+          publish_dir: allure-history
