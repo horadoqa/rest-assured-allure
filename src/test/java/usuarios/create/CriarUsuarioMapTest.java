@@ -14,7 +14,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 
-public class CriarUsuarioTest {
+public class CriarUsuarioMapTest {
 
     @Feature("Usuários")
     @Story("Cadastro de usuário")

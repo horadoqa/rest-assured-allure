@@ -8,12 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 
-public class AtualizarUsuarioTest {
+public class DeleteTest {
 
     @BeforeAll
     static void setup() {
@@ -21,10 +22,10 @@ public class AtualizarUsuarioTest {
     }
 
     @Feature("Usuários")
-    @Story("Update de dados do usuário")
-    @Description("Validar atualização de dados do usuário com sucesso")
+    @Story("Deleção de usuário")
+    @Description("Validar deleção de usuário com sucesso")
     @Test
-    void deveAtualizarUsuarioComSucesso() {
+    void deveExcluirUsuarioComSucesso() {
 
         // Arrange
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
@@ -35,7 +36,7 @@ public class AtualizarUsuarioTest {
         usuario.setPassword("123456");
         usuario.setAdministrador("true");
 
-        // Cria o usuário
+        // Cria o usuário e captura o ID
         String idUsuario =
             given()
                 .contentType(ContentType.JSON)
@@ -44,31 +45,16 @@ public class AtualizarUsuarioTest {
                 .post("/usuarios")
             .then()
                 .statusCode(201)
+                .body("message", equalTo("Cadastro realizado com sucesso"))
                 .extract()
                 .path("_id");
 
-        // Atualiza os dados
-        usuario.setNome("João Silva Atualizado");
-        usuario.setPassword("654321");
-
         // Act + Assert
         given()
-            .contentType(ContentType.JSON)
-            .body(usuario)
         .when()
-            .put("/usuarios/" + idUsuario)
+            .delete("/usuarios/" + idUsuario)
         .then()
             .statusCode(200)
-            .body("message", equalTo("Registro alterado com sucesso"));
-
-        // Validação adicional
-        given()
-        .when()
-            .get("/usuarios/" + idUsuario)
-        .then()
-            .statusCode(200)
-            .body("nome", equalTo("João Silva Atualizado"))
-            .body("email", equalTo(email))
-            .body("administrador", equalTo("true"));
+            .body("message", equalTo("Registro excluído com sucesso"));
     }
 }

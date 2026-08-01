@@ -1,21 +1,21 @@
+package usuarios;
+
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import model.Usuario;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 
-public class CriarUsuarioTest {
+public class ModelCriarUsuarioTest {
 
-
-    // Usando o BeforAll para evitar repetição caso a classe tenha vários testes.
     @BeforeAll
     static void setup() {
         RestAssured.baseURI = "https://serverest.dev";
@@ -29,19 +29,17 @@ public class CriarUsuarioTest {
 
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
 
-        Map<String, Object> usuario = new HashMap<>();
-        usuario.put("nome", "João Silva");
-        usuario.put("email", email);
-        usuario.put("password", "123456");
-        usuario.put("administrador", "true");
+        Usuario usuario = new Usuario();
+        usuario.setNome("João Silva");
+        usuario.setEmail(email);
+        usuario.setPassword("123456");
+        usuario.setAdministrador("true");
 
         given()
-            .contentType("application/json")
+            .contentType(ContentType.JSON)
             .body(usuario)
-
         .when()
             .post("/usuarios")
-
         .then()
             .statusCode(201)
             .body("message", equalTo("Cadastro realizado com sucesso"))

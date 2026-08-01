@@ -76,26 +76,41 @@ DELETE
 # Estrutura do projeto
 
 ```text
-src
-└── test
-    ├── java
-    │
-    │── model
-    │   ├── Usuario.java
-    │   └── Login.java
-    │
-    │── usuarios
-    │   ├── CriarUsuarioTest.java
-    │   ├── AtualizarUsuarioTest.java
-    │   └── ExcluirUsuarioTest.java
-    │
-    │── login
-    │   └── LoginTest.java
-    │
-    │── produtos
-    │   └── ProdutosTest.java
-    │
-    └── resources
+.
+├── README.md
+├── pom.xml
+└── src
+    └── test
+        └── java
+            ├── carrinhos
+            │   └── CarrinhosTest.java
+            ├── model
+            │   ├── Login.java
+            │   └── Usuario.java
+            ├── produtos
+            │   └── ProdutosTest.java
+            ├── usuarios
+            │   ├── create
+            │   │   ├── BeforeAllTeste.java
+            │   │   ├── MapTest.java
+            │   │   ├── ModelTest.java
+            │   │   └── StringTest.java
+            │   ├── delete
+            │   │   ├── Delete.java
+            │   │   └── delete.md
+            │   ├── login
+            │   │   ├── LoginTest.java
+            │   │   └── login.md
+            │   ├── read
+            │   │   ├── UserTest.java
+            │   │   └── UserTestID.java
+            │   └── update
+            │       ├── UpdateUser.java
+            │       └── update.md
+            └── utils
+                ├── BaseTest.java
+                └── TokenFactory.java
+
 ```
 
 ---
@@ -216,6 +231,67 @@ Exemplos:
 
 # Executando os testes
 
+## Dependências
+
+- Java
+- Maven
+
+### Instale Java 17 (caso não tenha)
+
+No Ubuntu:
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jdk -y
+```
+
+Verifique a versão
+
+```bash
+java -version
+openjdk version "17.0.19" 2026-04-21
+OpenJDK Runtime Environment (build 17.0.19+10-1-22.04.2-Ubuntu)
+OpenJDK 64-Bit Server VM (build 17.0.19+10-1-22.04.2-Ubuntu, mixed mode, sharing)
+```
+
+Se tiver mais de uma versão instalada:
+
+```bash
+update-java-alternatives --list
+
+java-1.11.0-openjdk-amd64      1111       /usr/lib/jvm/java-1.11.0-openjdk-amd64
+java-1.17.0-openjdk-amd64      1711       /usr/lib/jvm/java-1.17.0-openjdk-amd64
+```
+
+Troque a versão padrão
+
+```bash
+sudo update-alternatives --config java
+```
+
+Também para o Compilador
+
+```bash
+sudo update-alternatives --config javac
+```
+
+### Instale o MAVEN
+
+```bash
+sudo apt install maven -y
+```
+
+Verifique a versão
+
+```bash
+mvn -version
+
+Apache Maven 3.6.3
+Maven home: /usr/share/maven
+Java version: 17.0.19, vendor: Ubuntu, runtime: /usr/lib/jvm/java-17-openjdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "5.15.167.4-microsoft-standard-wsl2", arch: "amd64", family: "unix"
+```
 ## Executar todos os testes
 
 ```bash

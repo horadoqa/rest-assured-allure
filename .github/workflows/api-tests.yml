@@ -43,7 +43,7 @@ jobs:
       - name: Gerar relatório Allure
         if: always()
         run: |
-          allure generate target/allure-results \
+          allure generate allure-results \
           --clean \
           -o target/allure-report
 
