@@ -31,9 +31,9 @@ public class DeleteTest {
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
 
         Usuario usuario = new Usuario();
-        usuario.setNome("João Silva");
+        usuario.setNome("Hora do QA");
         usuario.setEmail(email);
-        usuario.setPassword("123456");
+        usuario.setPassword("1q2w3e4r");
         usuario.setAdministrador("true");
 
         // Cria o usuário e captura o ID

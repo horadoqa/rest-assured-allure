@@ -30,9 +30,9 @@ public class UpdateTest {
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
 
         Usuario usuario = new Usuario();
-        usuario.setNome("João Silva");
+        usuario.setNome("Hora do QA");
         usuario.setEmail(email);
-        usuario.setPassword("123456");
+        usuario.setPassword("1q2w3e4r");
         usuario.setAdministrador("true");
 
         // Cria o usuário
@@ -48,8 +48,8 @@ public class UpdateTest {
                 .path("_id");
 
         // Atualiza os dados
-        usuario.setNome("João Silva Atualizado");
-        usuario.setPassword("654321");
+        usuario.setNome("Hora do QA Atualizado");
+        usuario.setPassword("4r3e2w1q");
 
         // Act + Assert
         given()
@@ -67,7 +67,7 @@ public class UpdateTest {
             .get("/usuarios/" + idUsuario)
         .then()
             .statusCode(200)
-            .body("nome", equalTo("João Silva Atualizado"))
+            .body("nome", equalTo("Hora do QA Atualizado"))
             .body("email", equalTo(email))
             .body("administrador", equalTo("true"));
     }

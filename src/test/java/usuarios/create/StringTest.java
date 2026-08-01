@@ -20,9 +20,9 @@ public class StringTest {
 
         String body = """
         {
-            "nome": "João Silva",
-            "email": "joao.silva.teste123@email.com",
-            "password": "123456",
+            "nome": "Hora do QA",
+            "email": "horadoqa@email.com",
+            "password": "1q2w3e4r",
             "administrador": "true"
         }
         """;

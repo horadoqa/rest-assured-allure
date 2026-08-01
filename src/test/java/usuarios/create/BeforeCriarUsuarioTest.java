@@ -30,9 +30,9 @@ public class BeforeCriarUsuarioTest {
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
 
         Map<String, Object> usuario = new HashMap<>();
-        usuario.put("nome", "João Silva");
+        usuario.put("nome", "Hora do QA");
         usuario.put("email", email);
-        usuario.put("password", "123456");
+        usuario.put("password", "1q2w3e4r");
         usuario.put("administrador", "true");
 
         given()

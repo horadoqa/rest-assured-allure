@@ -30,10 +30,10 @@ public class LoginTest {
 
         // Arrange
         String email = "usuario" + System.currentTimeMillis() + "@email.com";
-        String senha = "123456";
+        String senha = "1q2w3e4r";
 
         Usuario usuario = new Usuario();
-        usuario.setNome("João Silva");
+        usuario.setNome("Hora do QA");
         usuario.setEmail(email);
         usuario.setPassword(senha);
         usuario.setAdministrador("true");
