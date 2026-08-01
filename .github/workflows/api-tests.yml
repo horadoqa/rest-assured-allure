@@ -1,0 +1,66 @@
+name: API Tests - ServeRest
+
+on:
+  schedule:
+    # Todos os dias às 09:00 UTC
+    - cron: '0 9 * * *'
+
+  workflow_dispatch:
+
+
+jobs:
+
+  test:
+
+    name: Executar testes API
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+
+      - name: Executar testes Rest Assured
+        run: mvn clean test
+
+
+      - name: Instalar Allure CLI
+        if: always()
+        run: |
+          sudo apt-get update
+          sudo apt-get install allure -y
+
+
+      - name: Gerar relatório Allure
+        if: always()
+        run: |
+          allure generate target/allure-results \
+          --clean \
+          -o target/allure-report
+
+
+      - name: Publicar relatório Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/allure-report
+          retention-days: 30
+
+
+      - name: Publicar resultados dos testes
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: API Test Results
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
