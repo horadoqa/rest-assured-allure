@@ -36,8 +36,13 @@ jobs:
       - name: Instalar Allure CLI
         if: always()
         run: |
-          sudo apt-get update
-          sudo apt-get install allure -y
+          sudo npm install -g allure-commandline --save-dev
+
+          
+      - name: Verificar Allure
+        if: always()
+        run: |
+          allure --version
 
 
       - name: Gerar relatório Allure
