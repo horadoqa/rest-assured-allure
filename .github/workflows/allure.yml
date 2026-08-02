@@ -1,4 +1,4 @@
-name: API Tests - ServeRest
+name: Rest-Assured-Allure
 
 on:
   schedule:
@@ -17,12 +17,9 @@ jobs:
     name: Executar testes API
     runs-on: ubuntu-latest
 
-
     steps:
-
       - name: Checkout código
         uses: actions/checkout@v4
-
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -30,22 +27,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-
       - name: Executar testes Rest Assured
         run: mvn clean test
 
-
-      - name: Instalar Allure CLI
+      - name: Get Allure history
         if: always()
-        run: |
-          sudo npm install -g allure-commandline --save-dev
-
-
-      - name: Verificar Allure
-        if: always()
-        run: |
-          allure --version
-
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: allure
+          path: allure-history
 
       - name: Gerar relatório Allure
         if: always()
@@ -54,8 +45,7 @@ jobs:
           allure_results: allure-results
           allure_history: allure-history
 
-
-      - name: Publicar relatório Allure no GitHub Pages
+      - name: Publicar relatório Allure
         if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
