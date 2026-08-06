@@ -1,0 +1,79 @@
+name: Rest-Assured-Allure
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 9 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Executar testes
+        run: mvn clean test
+
+      - name: Instalar Allure Commandline
+        run: |
+          curl -Lo allure.tgz https://github.com/allure-framework/allure2/releases/latest/download/allure-2.34.1.tgz
+          tar -xzf allure.tgz
+          sudo mv allure-2.34.1 /opt/allure
+          echo "/opt/allure/bin" >> $GITHUB_PATH
+
+      - name: Checkout branch allure
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: allure
+          path: gh-pages
+
+      - name: Restaurar histórico
+        run: |
+          if [ -d gh-pages/history ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages/history/* allure-results/history/
+          fi
+
+      - name: Criar executor.json
+        run: |
+          cat > allure-results/executor.json << EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildOrder": ${{ github.run_number }},
+            "buildName": "Run #${{ github.run_number }}",
+            "buildUrl": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportName": "Run #${{ github.run_number }}",
+            "reportUrl": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          }
+          EOF
+
+      - name: Gerar relatório
+        run: |
+          allure generate allure-results \
+            --clean \
+            -o allure-report
+
+      - name: Atualizar conteúdo publicado
+        run: |
+          cp -r allure-report/* gh-pages/
+
+      - name: Publicar GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: allure
+          publish_dir: gh-pages

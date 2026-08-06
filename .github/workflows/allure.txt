@@ -51,11 +51,24 @@ jobs:
           allure_results: allure-results/
           allure_history: allure-history
       
+      - name: Verificar histórico gerado
+        run: |
+          echo "=== Novo history-trend ==="
+          cat allure-history/history/history-trend.json || true
+      
       - name: Listar history gerado
         if: always()
         run: |
           echo "Conteúdo history:"
           ls -R allure-history/history
+
+      - name: Verificar histórico baixado
+        run: |
+          echo "=== history ==="
+          ls -R allure-history/history || true
+
+          echo "=== history-trend ==="
+          cat allure-history/history/history-trend.json || true
 
       - name: Publicar relatório Allure
         if: always()
