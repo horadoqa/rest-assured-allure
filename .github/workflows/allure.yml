@@ -37,13 +37,25 @@ jobs:
         with:
           ref: allure
           path: allure-history
+      
+      - name: Listar histórico
+        if: always()
+        run: |
+          echo "Conteúdo allure-history:"
+          ls -R allure-history
 
       - name: Gerar relatório Allure
-        if: always()
         uses: simple-elf/allure-report-action@master
+        if: always()
         with:
           allure_results: allure-results/
           allure_history: allure-history
+      
+      - name: Listar history gerado
+        if: always()
+        run: |
+          echo "Conteúdo history:"
+          ls -R allure-history/history
 
       - name: Publicar relatório Allure
         if: always()

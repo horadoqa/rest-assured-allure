@@ -306,6 +306,14 @@ O Maven irá:
 4. Executar os testes;
 5. Gerar os relatórios.
 
+## Abrir o relatório
+
+allure serve allure-results
+
+allure generate allure-results --clean -o allure-report
+
+allure open allure-report
+
 ---
 
 # Executar um teste específico
