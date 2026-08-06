@@ -42,7 +42,7 @@ jobs:
         if: always()
         uses: simple-elf/allure-report-action@master
         with:
-          allure_results: target/allure-results/
+          allure_results: allure-results/
           allure_history: allure-history
 
       - name: Publicar relatório Allure
