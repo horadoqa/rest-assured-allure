@@ -36,8 +36,10 @@ jobs:
             https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${VERSION}/allure-commandline-${VERSION}.tgz
 
           tar -xzf allure.tgz
-          sudo mv allure-${VERSION} /opt/allure
-          echo "/opt/allure/bin" >> "$GITHUB_PATH"
+
+          echo "$PWD/allure-${VERSION}/bin" >> "$GITHUB_PATH"
+
+          export PATH="$PWD/allure-${VERSION}/bin:$PATH"
 
           allure --version
 
@@ -52,7 +54,9 @@ jobs:
         run: |
           if [ -d gh-pages/last-history ]; then
             echo "Restaurando histórico..."
+
             mkdir -p allure-results/history
+
             cp -r gh-pages/last-history/* allure-results/history/
           else
             echo "Nenhum histórico encontrado."
@@ -80,11 +84,11 @@ jobs:
             --clean \
             -o allure-report
 
-      - name: Atualizar histórico
+      - name: Atualizar conteúdo publicado
         run: |
           mkdir -p gh-pages
 
-          # Salva esta execução em uma pasta numerada
+          # Guarda uma cópia desta execução
           mkdir -p gh-pages/${{ github.run_number }}
           cp -r allure-report/* gh-pages/${{ github.run_number }}/
 
@@ -92,7 +96,7 @@ jobs:
           rm -rf gh-pages/last-history
           cp -r allure-report/history gh-pages/last-history
 
-          # Atualiza o relatório principal (última execução)
+          # Atualiza a raiz do GitHub Pages com o relatório mais recente
           cp -r allure-report/* gh-pages/
 
       - name: Publicar GitHub Pages
